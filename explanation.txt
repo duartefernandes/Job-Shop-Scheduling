@@ -1,0 +1,23 @@
+tasks[0][0]   tasks[0][1]   tasks[0][2]
++------------+------------+------------+
+| machine: 0 | machine: 1 | machine: 2 |
+| time:    3 | time:    2 | time:    2 |
+| scheduling | scheduling | scheduling |
+|            |            |            |
++------------+------------+------------+
+
+tasks[1][0]   tasks[1][1]   tasks[1][2]
++------------+------------+------------+
+| machine: 0 | machine: 2 | machine: 1 |
+| time:    2 | time:    1 | time:    4 |
+| scheduling | scheduling | scheduling |
+|            |            |            |
++------------+------------+------------+
+
+tasks[2][0]   tasks[2][1]   tasks[2][2]
++------------+------------+------------+
+| machine: 1 | machine: 2 | machine: 0 |
+| time:    4 | time:    3 | time:    1 |
+| scheduling | scheduling | scheduling |
+|            |            |            |
++------------+------------+------------+

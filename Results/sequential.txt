@@ -1,0 +1,6 @@
+0 3 5
+3 7 8
+12 16 19
+
+Makespan: 20
+Execution time (including threads creation): 0.000001 s
