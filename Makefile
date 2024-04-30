@@ -1,13 +1,19 @@
-parallel:
-	gcc-13 -lpthread job_shop_pthreads.c -o job-shop-parallel
+ifeq ($(shell which gcc-13 2>/dev/null),)
+    CC := gcc
+else
+    CC := gcc-13
+endif
 
-sequential:
-	gcc-13 job_shop_sequential.c -o job-shop-sequential
+parallel: job_shop_pthreads.c io.c makespan.c
+	$(CC) -lpthread job_shop_pthreads.c io.c makespan.c -o job-shop-parallel
 
-one_by_one:
-	gcc-13 job_shop_one_by_one.c -o job-shop-one-by-one
+sequential: job_shop_sequential.c io.c makespan.c
+	$(CC) job_shop_sequential.c io.c makespan.c -o job-shop-sequential
 
-all: parallel sequential one_by_one
+one_by_one: job_shop_one_by_one.c io.c makespan.c
+	$(CC) job_shop_one_by_one.c io.c makespan.c -o job-shop-one-by-one
+
+build all: parallel sequential one_by_one
 
 clean:
 	rm -rf *.o *~ job-shop-parallel
