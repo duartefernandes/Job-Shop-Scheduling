@@ -1,0 +1,6 @@
+ 0  3  5 
+ 7  9 10 
+14 18 21 
+
+Total makespan: 22
+Execution time: 0.000005 s
