@@ -10,7 +10,7 @@
 typedef struct {
     int machine;
     int time;
-    long long scheduling;
+    int scheduling;
 } Task;
 
 #endif

@@ -36,14 +36,14 @@ void readInput(const char* filename) {
     printf("Total machines: %d\n", totalMachines);
 }
 
-void writeResult(const char* filename, double executionTime, long long totalMakespan) {
+void writeResult(const char* filename, double executionTime, int totalMakespan) {
     if (totalJobs <= 50)
     {
         // Write the result to the console
         puts("--- Result:");
-        for (long long i = 0; i < totalJobs; i++) {
+        for (int i = 0; i < totalJobs; i++) {
             printf("Job%lldd : ", i);
-            for (long long j = 0; j < totalMachines; j++) {
+            for (int j = 0; j < totalMachines; j++) {
                 printf("(M%d - %d) -> %lld", tasks[i][j].machine, tasks[i][j].time, tasks[i][j].scheduling);
                 if (j + 1 < totalMachines)
                 {

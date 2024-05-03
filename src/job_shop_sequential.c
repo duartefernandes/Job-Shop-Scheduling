@@ -12,28 +12,28 @@
 #include "utils/utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
-long long machineAvailability[MAX_MACHINES] = {0};
+int machineAvailability[MAX_MACHINES] = {0};
 
-long long totalJobs = 0, totalMachines = 0;
+int totalJobs = 0, totalMachines = 0;
 
 void scheduleJobs() {
     // Iterate over all jobs
-    for (long long job = 0; job < totalJobs; job++) {
+    for (int job = 0; job < totalJobs; job++) {
         // Iterate over all tasks of the job
-        for (long long task = 0; task < totalMachines; task++) {
+        for (int task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
             // Simulate work
-            long long counter = 0;
-            for (long long i = 0; i < 100000; ++i) {
+            int counter = 0;
+            for (int i = 0; i < 100000; ++i) {
                 counter += i;
             }
 
-            long long schedule = 0;
+            int schedule = 0;
 
             // Verify if it's the first task of the job
-            long long previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
+            int previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
 
             if (previousTaskEnd == 0) {
                 // The first task of each job is scheduled based on the machine availability
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     scheduleJobs();
     double endTime = getClock();
 
-    long long totalMakespan = calculateMakespan();
+    int totalMakespan = calculateMakespan();
 
     writeResult(argv[2], endTime - initTime, totalMakespan);
 
