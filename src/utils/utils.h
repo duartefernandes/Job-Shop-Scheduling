@@ -4,9 +4,9 @@
 #include "../data_structs.h"
 
 extern Task tasks[MAX_JOBS][MAX_MACHINES];
-extern long long totalJobs, totalMachines;
+extern int totalJobs, totalMachines;
 
 double getClock();
-long long calculateMakespan();
+int calculateMakespan();
 
 #endif

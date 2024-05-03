@@ -12,17 +12,17 @@
 #include "utils/utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
-long long machineAvailability[MAX_MACHINES] = {0};
+int machineAvailability[MAX_MACHINES] = {0};
 
-long long totalJobs = 0, totalMachines = 0;
+int totalJobs = 0, totalMachines = 0;
 
 void scheduleJobs() {
-    for (long long job = 0; job < totalJobs; job++) {
-        for (long long task = 0; task < totalMachines; task++) {
+    for (int job = 0; job < totalJobs; job++) {
+        for (int task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
-            long long schedule = 0;
+            int schedule = 0;
 
             if (task == 0 && job == 0) {
                 schedule = 0;
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     scheduleJobs();
     double endTime = getClock();
 
-    long long totalMakespan = calculateMakespan();
+    int totalMakespan = calculateMakespan();
 
     writeResult(argv[2], endTime - initTime, totalMakespan);
 

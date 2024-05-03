@@ -26,3 +26,6 @@ clean:
 	rm -rf *.o *~ job_shop_parallel
 	rm -rf *.o *~ job_shop_sequential
 	rm -rf *.o *~ job_shop_one_by_one
+	rm -rf *.o *~ job_shop_parallel.exe
+	rm -rf *.o *~ job_shop_sequential.exe
+	rm -rf *.o *~ job_shop_one_by_one.exe

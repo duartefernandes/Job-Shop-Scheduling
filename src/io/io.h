@@ -4,10 +4,10 @@
 #include "../data_structs.h"
 
 extern Task tasks[MAX_JOBS][MAX_MACHINES];
-extern long long machineAvailability[MAX_MACHINES];
-extern long long totalJobs, totalMachines, threadCount;
+extern int machineAvailability[MAX_MACHINES];
+extern int totalJobs, totalMachines, threadCount;
 
 void readInput(const char* filename);
-void writeResult(const char* filename, double executionTime, long long totalMakespan);
+void writeResult(const char* filename, double executionTime, int totalMakespan);
 
 #endif
