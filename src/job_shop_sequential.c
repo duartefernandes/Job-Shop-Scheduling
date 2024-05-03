@@ -1,5 +1,5 @@
 /*
- * One-by-One Job Shop Scheduling Program
+ * Sequential Job Shop Scheduling Program
  * MEI 2023/2024 - CAD
  * Authors: Duarte Fernandes (14858), Rafael Azevedo (21197)
  * Date: 05-05-2024
@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "io.h"
-#include "utils.h"
+#include "io/io.h"
+#include "utils/utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
 long long machineAvailability[MAX_MACHINES] = {0};
@@ -17,23 +17,32 @@ long long machineAvailability[MAX_MACHINES] = {0};
 long long totalJobs = 0, totalMachines = 0;
 
 void scheduleJobs() {
+    // Iterate over all jobs
     for (long long job = 0; job < totalJobs; job++) {
+        // Iterate over all tasks of the job
         for (long long task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
+            // Simulate work
+            long long counter = 0;
+            for (long long i = 0; i < 100000; ++i) {
+                counter += i;
+            }
+
             long long schedule = 0;
 
-            if (task == 0 && job == 0) {
-                schedule = 0;
-            }
-            // If it's the first task of a job, schedule it after the last task of the previous job
-            else if (task == 0) {
-                // Assuming tasks are executed sequentially, the last task of the previous job ends at the same time as the last task of the current job
-                schedule = tasks[job-1][totalMachines - 1].scheduling + tasks[job-1][totalMachines - 1].time;
-            }
-            else {
-                schedule = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
+            // Verify if it's the first task of the job
+            long long previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
+
+            if (previousTaskEnd == 0) {
+                // The first task of each job is scheduled based on the machine availability
+                schedule = machineAvailability[machineIndex];
+            } else {
+                // Compare the end time of the previous operation with the availability of the machine
+                schedule = (previousTaskEnd > machineAvailability[machineIndex])
+                    ? previousTaskEnd
+                    : machineAvailability[machineIndex];
             }
 
             tasks[job][task].scheduling = schedule;

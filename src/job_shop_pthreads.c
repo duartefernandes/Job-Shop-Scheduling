@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include "io.h"
-#include "utils.h"
+#include "io/io.h"
+#include "utils/utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
 long long machineAvailability[MAX_MACHINES] = {0};
