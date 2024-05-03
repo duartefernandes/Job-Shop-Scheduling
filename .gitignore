@@ -1,1 +1,7 @@
 .DS_Store
+/Results
+*.out
+*.exe
+job_shop_one_by_one
+job_shop_sequential
+job_shop_parallel
