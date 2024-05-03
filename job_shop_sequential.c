@@ -9,39 +9,39 @@
 #include <stdlib.h>
 #include <time.h>
 #include "io.h"
-#include "makespan.h"
-
-#define getClock() ((double)clock() / CLOCKS_PER_SEC)
+#include "utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
-int machineAvailability[MAX_MACHINES] = {0};
+long long machineAvailability[MAX_MACHINES] = {0};
 
-int totalJobs = 0, totalMachines = 0;
+long long totalJobs = 0, totalMachines = 0;
 
 void scheduleJobs() {
     // Iterate over all jobs
-    for (int job = 0; job < totalJobs; job++) {
+    for (long long job = 0; job < totalJobs; job++) {
         // Iterate over all tasks of the job
-        for (int task = 0; task < totalMachines; task++) {
+        for (long long task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
             // Simulate work
             long long counter = 0;
-            for (long long i = 0; i < 1000000; ++i) {
+            for (long long i = 0; i < 100000; ++i) {
                 counter += i;
             }
 
-            int schedule = 0;
+            long long schedule = 0;
 
-             if (task == 0) {
+            // Verify if it's the first task of the job
+            long long previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
+
+            if (previousTaskEnd == 0) {
                 // The first task of each job is scheduled based on the machine availability
                 schedule = machineAvailability[machineIndex];
             } else {
                 // Compare the end time of the previous operation with the availability of the machine
-                int previousOperationEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
-                schedule = (previousOperationEnd > machineAvailability[machineIndex])
-                    ? previousOperationEnd
+                schedule = (previousTaskEnd > machineAvailability[machineIndex])
+                    ? previousTaskEnd
                     : machineAvailability[machineIndex];
             }
 
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     scheduleJobs();
     double endTime = getClock();
 
-    int totalMakespan = calculateMakespan();
+    long long totalMakespan = calculateMakespan();
 
     writeResult(argv[2], endTime - initTime, totalMakespan);
 

@@ -9,22 +9,20 @@
 #include <stdlib.h>
 #include <time.h>
 #include "io.h"
-#include "makespan.h"
-
-#define getClock() ((double)clock() / CLOCKS_PER_SEC)
+#include "utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
-int machineAvailability[MAX_MACHINES] = {0};
+long long machineAvailability[MAX_MACHINES] = {0};
 
-int totalJobs = 0, totalMachines = 0;
+long long totalJobs = 0, totalMachines = 0;
 
 void scheduleJobs() {
-    for (int job = 0; job < totalJobs; job++) {
-        for (int task = 0; task < totalMachines; task++) {
+    for (long long job = 0; job < totalJobs; job++) {
+        for (long long task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
-            int schedule = 0;
+            long long schedule = 0;
 
             if (task == 0 && job == 0) {
                 schedule = 0;
@@ -56,7 +54,7 @@ int main(int argc, char* argv[]) {
     scheduleJobs();
     double endTime = getClock();
 
-    int totalMakespan = calculateMakespan();
+    long long totalMakespan = calculateMakespan();
 
     writeResult(argv[2], endTime - initTime, totalMakespan);
 

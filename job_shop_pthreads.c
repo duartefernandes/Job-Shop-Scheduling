@@ -7,44 +7,41 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <pthread.h>
 #include "io.h"
-#include "makespan.h"
-
-#define getClock() ((double)clock() / CLOCKS_PER_SEC)
+#include "utils.h"
 
 Task tasks[MAX_JOBS][MAX_MACHINES];
-int machineAvailability[MAX_MACHINES] = {0};
+long long machineAvailability[MAX_MACHINES] = {0};
 
 pthread_mutex_t machine_mutexes[MAX_MACHINES];
 
-int totalJobs = 0, totalMachines = 0, threadCount = 0;
+long long totalJobs = 0, totalMachines = 0, threadCount = 0;
 
 void* scheduleJobs(void* thread) {
-    int threadIndex = *(int*)thread;
-    int jobsPerThread = totalJobs / threadCount;
-    int remainderJobs = totalJobs % threadCount;
+    long long threadIndex = *(long long*)thread;
+    long long jobsPerThread = totalJobs / threadCount;
+    long long remainderJobs = totalJobs % threadCount;
 
-    int firstJobIndex = threadIndex * jobsPerThread + (threadIndex < remainderJobs ? threadIndex : remainderJobs);
-    int lastJobIndex = firstJobIndex + jobsPerThread + (threadIndex < remainderJobs ? 1 : 0);
+    long long firstJobIndex = threadIndex * jobsPerThread + (threadIndex < remainderJobs ? threadIndex : remainderJobs);
+    long long lastJobIndex = firstJobIndex + jobsPerThread + (threadIndex < remainderJobs ? 1 : 0);
 
-    for (int job = firstJobIndex; job < lastJobIndex; job++)
+    for (long long job = firstJobIndex; job < lastJobIndex; job++)
     {
-        for (int task = 0; task < totalMachines; task++) {
+        for (long long task = 0; task < totalMachines; task++) {
             int machineIndex = tasks[job][task].machine;
             int timeUnits = tasks[job][task].time;
 
             // Simulate work
             long long counter = 0;
-            for (long long i = 0; i < 1000000; ++i) {
+            for (long long i = 0; i < 100000; ++i) {
                 counter += i;
             }
 
-            int schedule = 0;
+            long long schedule = 0;
 
-            // Compare the end time of the previous task with the availability of the machine
-            int previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
+            // Verify if it's the first task of the job
+            long long previousTaskEnd = tasks[job][task - 1].scheduling + tasks[job][task - 1].time;
 
             if (previousTaskEnd == 0) {
                 pthread_mutex_lock(&machine_mutexes[machineIndex]);
@@ -52,6 +49,7 @@ void* scheduleJobs(void* thread) {
                 schedule = machineAvailability[machineIndex];
             } else {
                 pthread_mutex_lock(&machine_mutexes[machineIndex]);
+                // Compare the end time of the previous operation with the availability of the machine
                 schedule = (previousTaskEnd > machineAvailability[machineIndex])
                     ? previousTaskEnd
                     : machineAvailability[machineIndex];
@@ -73,37 +71,36 @@ int main(int argc, char* argv[]) {
 
     readInput(argv[1]);
 
-    int requestedThreads = strtol(argv[3], NULL, 10);
+    long long requestedThreads = strtol(argv[3], NULL, 10);
     // Use the smaller of totalJobs or requestedThreads to avoid unnecessary threads
     threadCount = (requestedThreads > totalJobs) ? totalJobs : requestedThreads;
 
     double initTime = getClock();
 
     pthread_t threads[threadCount];
-    static int threadIndices[MAX_JOBS];
+    static long long threadIndices[MAX_JOBS];
 
-    for (int i = 0; i < totalMachines; i++) {
+    for (long long i = 0; i < totalMachines; i++) {
         pthread_mutex_init(&machine_mutexes[i], NULL);
     }
 
-    int start = 0;
-    for (int i = 0; i < threadCount; i++) {
+    for (long long i = 0; i < threadCount; i++) {
         threadIndices[i] = i;
         pthread_create(&threads[i], NULL, scheduleJobs, &threadIndices[i]);
     }
 
     // Wait for all threads to finish
-    for (int i = 0; i < threadCount; i++) {
+    for (long long i = 0; i < threadCount; i++) {
         pthread_join(threads[i], NULL);
     }
 
-    for (int i = 0; i < totalMachines; i++) {
+    for (long long i = 0; i < totalMachines; i++) {
         pthread_mutex_destroy(&machine_mutexes[i]);
     }
 
     double endTime = getClock();
 
-    int totalMakespan = calculateMakespan();
+    long long totalMakespan = calculateMakespan();
 
     writeResult(argv[2], endTime - initTime, totalMakespan);
 

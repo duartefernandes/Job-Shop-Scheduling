@@ -1,9 +1,6 @@
-5 18 21 28 53 56
-0 15 20 30 40 50
-0 5 9 21 30 62
-8 13 20 25 35 56
-6 16 30 40 50 54
-13 16 44 53 69 73
+0 4 9
+3 5 6
+0 6 9
 
-Makespan: 74
-Execution time (including threads creation): 0.087651 s
+Makespan: 11
+Execution time (including threads creation): 0.000399 s
