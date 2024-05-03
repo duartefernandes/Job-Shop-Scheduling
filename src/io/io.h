@@ -1,7 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
-#include "data_structs.h"
+#include "../data_structs.h"
 
 extern Task tasks[MAX_JOBS][MAX_MACHINES];
 extern long long machineAvailability[MAX_MACHINES];
