@@ -2,8 +2,8 @@
 
 double getClock() {
     struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts); // Uses CLOCK_MONOTONIC for accurate timing
-    return (double)ts.tv_sec + (double)ts.tv_nsec / BILLION; // seconds with high precision
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (double)ts.tv_sec + (double)ts.tv_nsec / BILLION;
 }
 
 int calculateMakespan() {

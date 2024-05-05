@@ -78,29 +78,26 @@ int main(int argc, char* argv[]) {
 
     pthread_t threads[threadCount];
     static int threadIndices[MAX_JOBS];
-
+    // Initialize all mutexes
     for (int i = 0; i < totalMachines; i++) {
         pthread_mutex_init(&machine_mutexes[i], NULL);
     }
-
+    // Create threads
     for (int i = 0; i < threadCount; i++) {
         threadIndices[i] = i;
         pthread_create(&threads[i], NULL, scheduleJobs, &threadIndices[i]);
     }
-
     // Wait for all threads to finish
     for (int i = 0; i < threadCount; i++) {
         pthread_join(threads[i], NULL);
     }
-
+    // Destroy all mutexes
     for (int i = 0; i < totalMachines; i++) {
         pthread_mutex_destroy(&machine_mutexes[i]);
     }
 
     double endTime = getClock();
-
     int totalMakespan = calculateMakespan();
-
     writeResult(argv[2], endTime - initTime, totalMakespan);
 
     return 0;
